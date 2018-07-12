@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">GeoConcurso</string>
+    <string name="question_australia">Canberra es la capital de Australia.</string>
+    <string name="question_oceans">El Oceano Pacifico es mayor que el Océano Atlantico.</string>
+    <string name="question_mideast">El Canal de Suez conecta el Mar Rojo y
+        el Océano Índico.</string>
+    <string name="question_africa">La fuente del río Nilo está en Egipto.</string>
+    <string name="question_americas">El río Amazonas es el más largo de América.</string>
+    <string name="question_asia">El lago Baikal es el lago de agua dulce más antiguo y
+        profundo del mundo.</string>
+    <string name="true_button">Verdadero</string>
+    <string name="false_button">Falso</string>
+    <string name="next_button">Siguiente</string>
+    <string name="correct_toast">¡Correcto!</string>
+    <string name="incorrect_toast">¡Incorrecto!</string>
+    <string name="warning_text">¿Estás seguro de quererlo hacer?</string>
+    <string name="show_answer_button">Ver Respuesta</string>
+    <string name="cheat_button">¡Hacer trampa!</string>
+    <string name="judgment_toast">Hacer trampa está mal.</string>
+</resources>
