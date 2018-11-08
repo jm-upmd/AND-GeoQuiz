@@ -156,9 +156,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
-        // Introducir esta línea cuando se esté explicando la depuración
-        // pag. 100 libro
-        //Log.d(TAG,"Actualizando test pra la pregunta #" + mCurrentIndex,new Exception());
+       
         mQuestionTextView.setText(question); // Método sobrecargado tb. admite id del recurso texto
     }
 
