@@ -3,24 +3,29 @@ package com.bignerdranch.android.geoquiz;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+
 
 public class QuizActivity extends AppCompatActivity {
 
-    private static final String TAG = "QuizActivity";
+    private static final String TAG = "QuizActivity"; // Etiqueta para los Log.
+
+    // Clave para gurardar en el Bundle el indice de la última pregunta utilizada
     private static final String KEY_INDEX = "index";
     private static final int REQUEST_CODE_CHEAT = 0;
+    private int mCurrentIndex = 0;
+    private boolean mIsCheater;
 
-    private Button mTrueButton;
-    private Button mFalseButton;
-    private Button mNextButton;
-    private Button mCheatButton;
+    // View que mostrára la pregunta
     private TextView mQuestionTextView;
+
+    // Array de objetos Question. Llama al constructuor pasándole el identificador R.string
+
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
@@ -31,22 +36,34 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_asia, true),
     };
 
-    private int mCurrentIndex = 0;
-    private boolean mIsCheater;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
+
         setContentView(R.layout.activity_quiz);
 
-        if (savedInstanceState != null) {
+        // Extraigo el número de indice que se guardó a través del
+        // onSaveInstanceState(...)
+        // Esto se puede hacer también en onRestoreInstanceState
+
+        if (savedInstanceState != null) { // Si es la primera vez que se ejecuta es null
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
 
-        mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+        // Creamos referencias a los distintos wiews que contiene el layout de la actividad
 
-        mTrueButton = (Button) findViewById(R.id.true_button);
+        mQuestionTextView =  findViewById(R.id.question_text_view);
+        Button mTrueButton =  findViewById(R.id.true_button);
+        Button mFalseButton =  findViewById(R.id.false_button);
+        Button mNextButton =  findViewById(R.id.next_button);
+        Button mCheatButton =  findViewById(R.id.cheat_button);
+
+        // Dotamos de listeners a los views para que respondan a las acciones que realicemos
+        // sobre ellos.
+
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +71,6 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mFalseButton = (Button) findViewById(R.id.false_button);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +78,6 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mNextButton = (Button) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,11 +87,14 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mCheatButton = (Button) findViewById(R.id.cheat_button);
+
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                // Si estoy dentro de una clase anónima para hacer referencia a la clase contenedora
+                // tengo que hacerlo como NombreClaseContenedora.this
+
                 Intent intent = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
                 startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
@@ -120,7 +138,7 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        Log.i(TAG, "onSaveInstanceState");
+        Log.d(TAG, "*****onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
@@ -138,13 +156,16 @@ public class QuizActivity extends AppCompatActivity {
 
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
-        mQuestionTextView.setText(question);
+        // Introducir esta línea cuando se esté explicando la depuración
+        // pag. 100 libro
+        //Log.d(TAG,"Actualizando test pra la pregunta #" + mCurrentIndex,new Exception());
+        mQuestionTextView.setText(question); // Método sobrecargado tb. admite id del recurso texto
     }
 
     private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
 
-        int messageResId = 0;
+        int messageResId ;
 
         if (mIsCheater) {
             messageResId = R.string.judgment_toast;
