@@ -20,12 +20,22 @@ public class CheatActivity extends AppCompatActivity {
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
 
+    // La actividad llamada (no la llamante) es la encargada de construir el Intent
+    // y añadirle los datos extra necesarios. Una vez construido el itent se lo devuelve
+    // a la actividad llamante (QuizActivity).
+    // De esta forma toda la información del intent lo crea y maneja la actividad llamada
+    // y la llamente no tiene por que conocer los valores de las claves de los datos.
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
         Intent intent = new Intent(packageContext, CheatActivity.class);
         intent.putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue);
         return intent;
     }
 
+    // Recibe el intent recogido por l actividad llamante en el onActivityResult
+    // y le devuelve el valor booleando indicando se a visualizado o no la respuesta
+    // Esta forma de obtener los datos del intent a traves de la activiti llamada
+    // permite que la acivity llamante no tenga que conocer la información de las claves
+    // de los valores guardados en el intent y solo se definen y usan en la actividad llamada.
     public static boolean wasAnswerShown(Intent result) {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
     }
@@ -53,7 +63,7 @@ public class CheatActivity extends AppCompatActivity {
         });
     }
 
-    private void setAnswerShownResult(boolean isAnswerShown) {
+     private void setAnswerShownResult(boolean isAnswerShown) {
         Intent data = new Intent();
         data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
         setResult(RESULT_OK, data);
