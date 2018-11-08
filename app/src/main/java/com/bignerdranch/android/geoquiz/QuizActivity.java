@@ -165,9 +165,9 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId ;
 
-        if (mIsCheater) {
+        if (mIsCheater) { // Si consulto respuesta en la CheatActivity
             messageResId = R.string.judgment_toast;
-        } else {
+        } else { // Si no lo hizo entonces comprueba si el boton pulsado corresponde con la respuesta correcta
             if (userPressedTrue == answerIsTrue) {
                 messageResId = R.string.correct_toast;
             } else {
